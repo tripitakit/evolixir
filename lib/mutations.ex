@@ -36,14 +36,14 @@ defmodule Mutations do
   def get_random_weight() do
     min_weight_possible = -1.0 * (:math.pi / 2.0)
     max_weight_possible = :math.pi / 2.0
-    :random.uniform() * (max_weight_possible - min_weight_possible) + min_weight_possible
+    :rand.uniform() * (max_weight_possible - min_weight_possible) + min_weight_possible
   end
 
   defp add_bias(neurons) do
     #Acquire a random neuron
     {:ok, {neuron_layer, neuron_id}} = Neuron.get_random_neuron(neurons)
     #Generate new bias
-    new_bias = :random.uniform()
+    new_bias = :rand.uniform()
     #Change neuron to use new bias
     {:ok, neurons} = Neuron.change_bias(neurons, neuron_layer, neuron_id, new_bias)
     {:ok, neurons}
@@ -67,7 +67,7 @@ defmodule Mutations do
   end
 
   defp mutate_weights(probability_of_mutating, [{connection_id, old_weight} | remaining_connections], new_inbound_connections) do
-    case :random.uniform() <= probability_of_mutating do
+    case :rand.uniform() <= probability_of_mutating do
       true ->
         new_weight = get_random_weight()
         updated_inbound_connections = Map.put(new_inbound_connections, connection_id, new_weight)
@@ -97,7 +97,7 @@ defmodule Mutations do
   defp reset_weights([{connection_id, _old_weight} | remaining_connections], new_inbound_connections) do
     min_weight_possible = -1.0 * (:math.pi / 2.0)
     max_weight_possible = :math.pi / 2.0
-    new_weight = :random.uniform() * (max_weight_possible - min_weight_possible) + min_weight_possible
+    new_weight = :rand.uniform() * (max_weight_possible - min_weight_possible) + min_weight_possible
     updated_inbound_connections = Map.put(new_inbound_connections, connection_id, new_weight)
     reset_weights(remaining_connections, updated_inbound_connections)
   end
@@ -518,7 +518,7 @@ defmodule Mutations do
     end
 
     number_of_mutations =
-      :random.uniform() * :math.sqrt(number_of_nodes)
+      :rand.uniform() * :math.sqrt(number_of_nodes)
       |> round
 
     [0..number_of_mutations]

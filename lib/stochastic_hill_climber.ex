@@ -5,7 +5,7 @@ defmodule StochasticHillClimber do
   end
 
   defp perturb_connections_from_node([{connection_id, old_weight} | remaining_connections_from_node], probability_of_weight_perturbing, perturbed_connections_from_node) do
-    case :random.uniform() > probability_of_weight_perturbing do
+    case :rand.uniform() > probability_of_weight_perturbing do
       true ->
         new_weight = Mutations.get_random_weight()
         perturbed_connections_from_node = Map.put(perturbed_connections_from_node, connection_id, new_weight)
@@ -52,7 +52,7 @@ defmodule StochasticHillClimber do
   end
 
   defp perturb_weights_in_neural_layer([{neuron_id, neuron_struct} | remaining_neurons], probability_of_neuron_perturbing, perturbed_layer) do
-    case :random.uniform() > probability_of_neuron_perturbing do
+    case :rand.uniform() > probability_of_neuron_perturbing do
       true ->
         #perturb
         total_number_of_weights = count_total_inbound_connections(neuron_struct)
